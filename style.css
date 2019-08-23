@@ -5,6 +5,8 @@ body
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+    background-size: auto;
+    background-attachment: fixed;
     margin : 0px;
     padding : 0px;
     display: grid;
