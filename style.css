@@ -1,14 +1,9 @@
 body
 {
-    background:url(images/code3.jpg) no-repeat center center fixed; 
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    margin : 0px;
-    padding : 0px;
-    display: grid;
-    }
+    background:url(images/code3.jpg) no-repeat center; 
+    background-size : auto;
+    background-attachment: fixed;
+    } 
 .hello
 {
     width : 100%;
