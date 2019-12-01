@@ -1,0 +1,146 @@
+<html>
+<head>
+    <title>
+    </title>
+    <style type = "text/css">
+    body
+    {
+        margin: 0;    
+        background-color:burlywood;
+    }
+    #center
+    {
+        margin: 0 auto;
+        width: 700px;
+        height: 705px;
+    }
+    #main
+    {
+        margin: 0 auto;
+        position: relative;
+        top: 50px;
+    }
+    #poster
+    {
+        width:270px;
+        margin:30px 20px 0px 20px;
+        border-radius: 20px;
+        float: left;
+    }
+    a
+    {
+        text-decoration: none;
+        color: blue;
+    }
+    #apiDetails
+    {
+        padding-top: 5px;
+        line-height: 32px;
+        color: black;
+        font-size: 23px;
+    }
+    #lin
+    {
+        padding-left: 10px;
+    }
+    #float-clear
+    {
+        float: clear;        
+    }
+    #plot
+    {
+        font-size: 23px;
+        width: 600px;
+        padding-top: 10px;
+        padding-left: 25px;
+    }
+    #imdb
+    {
+        float: left;
+        padding-right: 10px;
+    }
+    </style>
+</head>
+<body>
+    <div id = "center">
+        <div id = "main">
+            <img id = "poster">        
+            <div id = "apiDetails">
+                <p>Movie :<span id = "lin"><a target = "_blank" id = "name" href = "#"></a></span></p>
+                <p>Starring :<span id = "lin"><a target = "_blank" id = "actor" href = "#"></a></span></p>
+                <p>Directed by :<span id = "lin"><a target = "_blank" id = "director" href = "#"></a></span></p>
+                <p id = "year"></p>
+                <p id = "lang"></p>
+                <p id = "genre"></p>
+                <span id = "lin" style = "padding-left: 0px;"><a target = "_blank" id = "imdb" href = "#">IMDB</a></span>
+                <div id = "rate"></div>
+            </div>
+            <div id = "float-clear"></div>
+            <br>
+            <p id = "plot"></p>
+        </div>
+            </div>
+    <script type="text/javascript">
+        function setAttributes(title,hero,director,year,genre,lang,poster,plot,imdb,votes)
+        {
+            if(poster == "N/A") //if poster of image is not available
+            {
+                document.getElementById("imag").src = "images/noimg.jpg";//set a default image to poster    
+            }
+            else
+            {
+                document.getElementById("poster").src = poster;    
+            }
+            document.getElementById("name").innerHTML =  title;
+            document.getElementById("name").href = "http://google.com/search?q="+title;
+            document.getElementById("actor").innerHTML = hero;
+            document.getElementById("actor").href = "http://google.com/search?q="+hero;
+            document.getElementById("director").innerHTML =  director;
+            document.getElementById("director").href = "http://google.com/search?q="+director;
+            document.getElementById("year").innerHTML =  "Released Year : " + year;
+            document.getElementById("lang").innerHTML =  "Language(s) : " + lang;           document.getElementById("genre").innerHTML =  "Genre : " + genre;
+            document.getElementById("imdb").href = "https://www.imdb.com/title/" + imdb;
+            document.getElementById("plot").innerHTML =  "Plot : " + plot;
+            if(votes != "N/A")
+            {
+                document.getElementById("rate").innerHTML = votes + " of 10";            
+            }
+        }
+        async function getOmdbDetails(apiUrl)
+        {
+            const response = await fetch(apiUrl);//Fetches json from APi
+            const myJson = await response.json();
+            console.log(myJson);
+            var title = myJson.Title;
+            var actors = myJson.Actors; 
+            var hero = actors.slice(0,actors.indexOf(','));
+            var director = myJson.Director;
+            var year = myJson.Year;
+            var genre = myJson.Genre;
+            var language = myJson.Language; 
+            var plot = myJson.Plot;
+            var imdb = myJson.imdbID;
+            var votes = myJson.imdbRating;
+            if(language.indexOf(',') == -1)
+            {
+                var lang = language;
+            }
+            else
+            {
+                var lang = language.slice(0,language.indexOf(','));    
+            }
+            var poster = myJson.Poster;
+            setAttributes(title,hero,director,year,genre,lang,poster,plot,imdb,votes);
+        }
+        window.onload = function()
+        {
+            var link = window.location.href; //Getting the url of loaded page
+            var index = link.indexOf("name");
+            var movie = link.slice(index+5);//finding the name of movie
+            var apiUrl = "http://www.omdbapi.com/?apikey=4a249f8d&t="+movie;//Creating a string of URl for API Fetch
+            getOmdbDetails(apiUrl);
+            document.title = movie;
+        }
+    </script>
+</body>
+</html>
