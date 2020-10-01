@@ -1,0 +1,100 @@
+<html>
+<head>
+    <title>MovieWiki</title>
+    <style type = "text/css">
+        body
+        {
+            margin : 0;
+            background-color: #F0E68C;
+        }
+        #top
+        {
+            margin: 0 auto;
+            width: 500px;
+            height: 720px;
+        }
+        #logo
+        {
+            font-size: 80px;
+            color: black;
+            position: relative;
+            top:20%;
+            left: 45px;
+            letter-spacing: 4px;
+            text-align: center;
+            font-family: fantasy;
+        }
+        a
+        {
+            text-decoration: none;
+        }
+        #inputField
+        {
+            position: relative;
+            top:30%;
+            left: 100px;
+            width: 250px;
+            height: 45px;
+            font-size: 20px;
+            border-radius: 20px;
+            float: left;
+        }
+        #search
+        {
+            position: relative;
+            top:30%;
+            margin: 0px 0 2px 5px; 
+            left: 100px;
+            width: 40px;
+            height: 40px;
+        }
+        #poster
+        {
+            position: relative;
+            width:170px;
+            border-radius: 20px;
+            top:40%;
+            right: 100px;
+        }
+        #wiki
+        {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id = "top">
+        <a id = "logo" href="#">Movie <span id = "wiki"> WiKi </span></a>
+        <br>
+        <label id = 'center'><input id = "inputField" type="text" placeholder="  Enter movie name"> 
+            <a><img id = "search" src = "Images/search.png"></a>
+            <br>
+            <a id = "nextPage" href = ""><img id = "poster"></a>
+        </label>
+    </div>
+    <script type = "text/javascript">
+        async function getOmdb(apiUrl)
+        {
+            const response = await fetch(apiUrl); //performs fetching from API
+            const myJson = await response.json();
+            console.log(myJson);
+            if(myJson.Response == "True") //If given movie name exists in API  
+            {
+                document.getElementById("poster").src = myJson.Poster; //setting the src attribute for poster image
+                document.getElementById("nextPage").href = "movie.html?name=" + myJson.Title; //URL which carries movie name to landing page
+            }
+            else    // If movie name doesn't exists in API
+            {
+                document.getElementById("poster").src = "images/noimg.jpg"; //If movie doesnt exist set a default image to poster
+            }
+        }
+        document.getElementById("search").onclick = function()
+        {    
+            document.getElementById("nextPage").href = "";        
+            var movie = document.getElementById("inputField").value;
+            var apiUrl = "http://www.omdbapi.com/?apikey=4a249f8d&t="+movie; //string of url with movie name appended for the api fetch 
+            getOmdb(apiUrl);
+        }
+    </script> 
+</body>
+</html>
