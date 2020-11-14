@@ -40,7 +40,7 @@ a {
   overflow: hidden;
 }
 
-@media screen and (max-width: 610px) {
+@media screen and (max-width: 1180px) {
   .detail-card {
     width: 95%;
     margin-left: auto;
